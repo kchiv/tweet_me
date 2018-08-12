@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 
 from .models import Tweet
 
@@ -6,7 +6,7 @@ from .models import Tweet
 
 
 def tweet_detail_view(request, pk):
-	obj = Tweet.objects.get(pk=pk) #GET from database
+	obj = get_object_or_404(Tweet, pk=pk) #GET from database
 	context = {
 		'object': obj
 	}
