@@ -9,19 +9,17 @@ from .forms import TweetModelForm
 
 # Create your views here.
 
-class TweetCreateView(LoginRequiredMixin, FormUserNeededMixin, CreateView):
-	form_class = TweetModelForm
-	template_name = 'tweets/create_view.html'
-	success_url = '/tweet/create/'
-	login_url = '/admin/'
-
-
 class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
 	queryset = Tweet.objects.all()
 	form_class = TweetModelForm
 	template_name = 'tweets/update_view.html'
 	success_url = '/tweet/'
 
+class TweetCreateView(LoginRequiredMixin, FormUserNeededMixin, CreateView):
+	form_class = TweetModelForm
+	template_name = 'tweets/create_view.html'
+	success_url = '/tweet/create/'
+	login_url = '/admin/'
 
 def tweet_detail_view(request, pk):
 	obj = get_object_or_404(Tweet, pk=pk) #GET from database
