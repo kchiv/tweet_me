@@ -1,5 +1,6 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
+from django.http import Http404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, UpdateView, DeleteView
 
@@ -14,6 +15,12 @@ class TweetDeleteView(LoginRequiredMixin, DeleteView):
 	model = Tweet
 	template_name = 'tweets/delete_confirm.html'
 	success_url = reverse_lazy('tweet:list')
+
+	def get_object(self, queryset=None):
+		obj = super(TweetDeleteView, self).get_object()
+		if not obj.user == self.request.user:
+			raise Http404
+		return obj
 
 class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
 	queryset = Tweet.objects.all()
