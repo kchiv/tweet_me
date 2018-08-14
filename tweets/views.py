@@ -13,7 +13,7 @@ from .forms import TweetModelForm
 class TweetDeleteView(LoginRequiredMixin, DeleteView):
 	model = Tweet
 	template_name = 'tweets/delete_confirm.html'
-	success_url = reverse_lazy('home')
+	success_url = reverse_lazy('tweet:list')
 
 class TweetUpdateView(LoginRequiredMixin, UserOwnerMixin, UpdateView):
 	queryset = Tweet.objects.all()
