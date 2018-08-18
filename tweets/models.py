@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.urls import reverse
 from django.db import models
 
 from .validators import validate_content
@@ -13,3 +14,6 @@ class Tweet(models.Model):
 
 	def __str__(self):
 		return str(self.content)
+
+	def get_absolute_url(self):
+		return reverse('tweet:detail', kwargs={'pk':self.pk})
