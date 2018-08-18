@@ -43,6 +43,9 @@ def tweet_detail_view(request, pk):
 
 def tweet_list_view(request):
 	queryset = Tweet.objects.all()
+	query = request.GET.get('q', None)
+	if query is not None:
+		queryset = queryset.filter(content__icontains=query)
 	context = {
 		'object_list': queryset
 	}
