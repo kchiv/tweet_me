@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from .views import home
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
+    url(r'^admin/', admin.site.urls, name='admin'),
     url(r'^$', home, name='home'),
     url(r'^tweet/', include('tweets.urls', namespace='tweet'))
 ]
