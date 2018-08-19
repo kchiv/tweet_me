@@ -4,23 +4,35 @@
 
 {% block content %}
 
-	<p>{% include 'tweets/search_form.html' %}</p>
-	
-		{% for obj in object_list %}
+	<div class="row">
+		<div class="col-sm-8 col-sm-offset-2">
 
-		<p><strong>ID:</strong> {{ obj.id }}</p>
-		<p><strong>Tweet:</strong> {{ obj.content }}</p>
-		<p><strong>Published:</strong> {{ obj.timestamp|timesince }} ago</p>
-		<p><strong>User:</strong> {{ obj.user }}</p>
-		<br>
+			{% for obj in object_list %}
 
-		{% empty %}
-			{% if request.GET.q %}
-			<p>No tweets found.</p>
-			{% else %}
-			<p>No tweets yet.</p>
-			{% endif %}
+			<div class="media">
+				<div class="media-left">
+					<a href="#">
+						{% if obj.image %}
+						<img class="media-object" src="..." alt="...">
+						{% endif %}
+					</a>
+				</div>
+				<div class="media-body">
+					<p>{{ obj.content }}</p>
+					<p>via {{ obj.user }} | {{ obj.timestamp|timesince }} ago | <a href="{{ obj.get_absolute_url }}">View</a></p>
+				</div>
+			</div>
+			<hr>
+			{% empty %}
+				{% if request.GET.q %}
+				<p>No tweets found.</p>
+				{% else %}
+				<p>No tweets yet.</p>
+				{% endif %}
 
-	{% endfor %}
+			{% endfor %}
+
+		</div>
+	</div>
 
 {% endblock content %}
