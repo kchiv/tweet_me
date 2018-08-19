@@ -1,2 +1,11 @@
-{{ object.content }}
-{{ object.timestamp }}
+{% extends 'base.html' %}
+
+{% block title %}{{ object.content|truncatewords_html:8 }} {{ block.super }}{% endblock title %}
+
+{% block content %}
+
+	<p><strong>Tweet:</strong> {{ object.content }}</p>
+	<p><strong>Published:</strong> {{ object.timestamp|timesince }} ago</p>
+	<p><strong>User:</strong> {{ object.user }}</p>
+
+{% endblock content %}
