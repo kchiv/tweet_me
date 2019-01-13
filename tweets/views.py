@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.http import Http404
 from django.urls import reverse_lazy
@@ -45,7 +46,10 @@ def tweet_list_view(request):
 	queryset = Tweet.objects.all()
 	query = request.GET.get('q', None)
 	if query is not None:
-		queryset = queryset.filter(content__icontains=query)
+		queryset = queryset.filter(
+					Q(content__icontains=query) |
+					Q(user__username__icontains=query)
+					)
 	context = {
 		'object_list': queryset
 	}
