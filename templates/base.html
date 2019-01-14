@@ -14,8 +14,8 @@
     <title>{% block title %}| Tweetme.co{% endblock title %}</title>
   </head>
   <body>
+    {% include 'navbar.html' %}
     <div class="container">
-      {% include 'navbar.html' %}
       <br>
       {% block content %}
       {% endblock content %}
