@@ -4,35 +4,28 @@
 
 {% block content %}
 
+{% for obj in object_list %}
+
 	<div class="row">
-		<div class="col-sm-8 col-sm-offset-2">
-
-			{% for obj in object_list %}
-
-			<div class="media">
-				<div class="media-left">
-					<a href="#">
-						{% if obj.image %}
-						<img class="media-object" src="..." alt="...">
-						{% endif %}
-					</a>
-				</div>
-				<div class="media-body">
-					<p>{{ obj.content }}</p>
-					<p>via {{ obj.user }} | {{ obj.timestamp|timesince }} ago | <a href="{{ obj.get_absolute_url }}">View</a></p>
-				</div>
-			</div>
+		<div class="col-sm-3 col-xs-12">
+			<h1>{{ obj.user }}</h1>
+		</div>
+		<div class="col-sm-9">
+			<p>{{ obj.content }}</p>
+			<p>via {{ obj.user }} | {{ obj.timestamp|timesince }} ago | <a href="{{ obj.get_absolute_url }}">View</a></p>
+		</div>
+		<div class="col-sm-12">
 			<hr>
-			{% empty %}
-				{% if request.GET.q %}
-				<p>No tweets found.</p>
-				{% else %}
-				<p>No tweets yet.</p>
-				{% endif %}
-
-			{% endfor %}
-
 		</div>
 	</div>
+
+{% empty %}
+	{% if request.GET.q %}
+	<p>No tweets found.</p>
+	{% else %}
+	<p>No tweets yet.</p>
+	{% endif %}
+
+{% endfor %}
 
 {% endblock content %}

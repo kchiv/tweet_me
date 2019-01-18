@@ -3,9 +3,16 @@
 {% block title %}{{ object.content|truncatewords:8 }} {{ block.super }}{% endblock title %}
 
 {% block content %}
+<div class="row">
 
-	<p><strong>Tweet:</strong> {{ object.content }}</p>
-	<p><strong>Published:</strong> {{ object.timestamp|timesince }} ago</p>
-	<p><strong>User:</strong> {{ object.user }}</p>
+	<div class="col-sm-3 col-xs-12">
+		<h1>{{ object.user }}</h1>
+	</div>
+	<div class="col-sm-9 col-xs-12">
+		<p>{{ object.content }}</p>
+		<p>{{ object.timestamp|timesince }} ago</p>
+	</div>
+
+</div>
 
 {% endblock content %}
