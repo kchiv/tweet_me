@@ -1,6 +1,6 @@
-<form class="form" method="POST" action="">
+<form class="form" method="POST" action="{% if action_url %}{{ action_url }}{% endif %}">
 	{% csrf_token %}
 	{{ form.as_p }}
 	<p>{{ form_content }}</p>
-	<input type="submit" name="{{ btn_title }}">
+	<input class="btn btn-primary" type="submit" name="{{ btn_title }}">
 </form>

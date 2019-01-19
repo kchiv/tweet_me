@@ -4,28 +4,37 @@
 
 {% block content %}
 
-{% for obj in object_list %}
-
-	<div class="row">
-		<div class="col-sm-3 col-xs-12">
-			<h1>{{ obj.user }}</h1>
+	{% if not request.GET.q %}
+		<div class="row">
+			<div class="col-sm-9 offset-sm-3">
+				{% include 'tweets/form.html' with form=create_form action_url=create_url btn_title='Tweet' %}
+			</div>
 		</div>
-		<div class="col-sm-9">
-			<p>{{ obj.content }}</p>
-			<p>via {{ obj.user }} | {{ obj.timestamp|timesince }} ago | <a href="{{ obj.get_absolute_url }}">View</a></p>
-		</div>
-		<div class="col-sm-12">
-			<hr>
-		</div>
-	</div>
-
-{% empty %}
-	{% if request.GET.q %}
-	<p>No tweets found.</p>
-	{% else %}
-	<p>No tweets yet.</p>
+		<hr>
 	{% endif %}
 
-{% endfor %}
+	{% for obj in object_list %}
+
+		<div class="row">
+			<div class="col-sm-3 col-xs-12">
+				<h1>{{ obj.user }}</h1>
+			</div>
+			<div class="col-sm-9">
+				<p>{{ obj.content }}</p>
+				<p>via {{ obj.user }} | {{ obj.timestamp|timesince }} ago | <a href="{{ obj.get_absolute_url }}">View</a></p>
+			</div>
+			<div class="col-sm-12">
+				<hr>
+			</div>
+		</div>
+
+	{% empty %}
+		{% if request.GET.q %}
+		<p>No tweets found.</p>
+		{% else %}
+		<p>No tweets yet.</p>
+		{% endif %}
+
+	{% endfor %}
 
 {% endblock content %}
