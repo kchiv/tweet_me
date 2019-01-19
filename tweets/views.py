@@ -51,6 +51,8 @@ def tweet_list_view(request):
 					Q(user__username__icontains=query)
 					)
 	context = {
-		'object_list': queryset
+		'object_list': queryset,
+		'create_form': TweetModelForm(),
+		'create_url': reverse_lazy('tweet:create')
 	}
 	return render(request, 'tweets/list_view.html', context)
