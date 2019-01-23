@@ -2,6 +2,38 @@
 
 {% block title %}All Tweets {{ block.super }}{% endblock title %}
 
+{% block script %}
+
+<script>
+	
+$(document).ready(function(){
+	console.log("working");
+
+	$.ajax({
+		url: "/api/tweet/",
+		method: "GET",
+		success: function(data){
+			$.each(data, function(key, value){
+				var tweetKey = key;
+				var tweetContent = value.content;
+				var tweetUser = value.user;
+				$("#tweet-container").append(
+					"<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via " + tweetUser.username + " | <a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>"
+				)
+			})
+		},
+		error: function(data){
+			console.log("error")
+			console.log(data)
+		}
+	})
+
+});
+
+</script>
+
+{% endblock script %}
+
 {% block content %}
 
 	{% if not request.GET.q %}
@@ -12,6 +44,10 @@
 		</div>
 		<hr>
 	{% endif %}
+
+	<div id="tweet-container">
+		
+	</div>
 
 	{% for obj in object_list %}
 
