@@ -5,22 +5,40 @@
 {% block script %}
 
 <script>
+
+const urlParams = new URLSearchParams(window.location.search);
 	
 $(document).ready(function(){
 	console.log("working");
 
+	const myParam = urlParams.get('q');
+	var tweetList = [];
+
+	function parseTweets(){
+		if (tweetList == 0){
+			$("#tweet-container").text("No tweets currently found.")
+		} else {
+		// tweets exist, parse and them
+		$.each(tweetList, function(key, value){
+			var tweetKey = key;
+			var tweetContent = value.content;
+			var tweetUser = value.user;
+			$("#tweet-container").append(
+				"<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via " + tweetUser.username + " | <a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>"
+			)
+		})
+		}
+	};
+
 	$.ajax({
 		url: "/api/tweet/",
+		data: {
+			"q": myParam
+		},
 		method: "GET",
 		success: function(data){
-			$.each(data, function(key, value){
-				var tweetKey = key;
-				var tweetContent = value.content;
-				var tweetUser = value.user;
-				$("#tweet-container").append(
-					"<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via " + tweetUser.username + " | <a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>"
-				)
-			})
+			tweetList = data
+			parseTweets()
 		},
 		error: function(data){
 			console.log("error")
@@ -48,29 +66,5 @@ $(document).ready(function(){
 	<div id="tweet-container">
 		
 	</div>
-
-	{% for obj in object_list %}
-
-		<div class="row">
-			<div class="col-sm-3 col-xs-12">
-				<h1>{{ obj.user }}</h1>
-			</div>
-			<div class="col-sm-9">
-				<p>{{ obj.content }}</p>
-				<p>via {{ obj.user }} | {{ obj.timestamp|timesince }} ago | <a href="{{ obj.get_absolute_url }}">View</a></p>
-			</div>
-			<div class="col-sm-12">
-				<hr>
-			</div>
-		</div>
-
-	{% empty %}
-		{% if request.GET.q %}
-		<p>No tweets found.</p>
-		{% else %}
-		<p>No tweets yet.</p>
-		{% endif %}
-
-	{% endfor %}
 
 {% endblock content %}
