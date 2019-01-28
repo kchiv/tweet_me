@@ -13,6 +13,18 @@ $(document).ready(function(){
 	const myParam = urlParams.get('q');
 	var tweetList = [];
 
+	function attachTweet(tweetValue, prepend){
+		var dateDisplay = tweetValue.date_display;
+		var tweetContent = tweetValue.content;
+		var tweetUser = tweetValue.user;
+		var tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via " + tweetUser.username + " | " + dateDisplay + " | " + "<a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+		if (prepend==true){
+			$("#tweet-container").prepend(tweetFormattedHtml)
+		} else {
+			$("#tweet-container").append(tweetFormattedHtml)
+		}
+	}
+
 	function parseTweets(){
 		if (tweetList == 0){
 			$("#tweet-container").text("No tweets currently found.")
@@ -20,11 +32,7 @@ $(document).ready(function(){
 		// tweets exist, parse and them
 		$.each(tweetList, function(key, value){
 			var tweetKey = key;
-			var tweetContent = value.content;
-			var tweetUser = value.user;
-			$("#tweet-container").append(
-				"<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via " + tweetUser.username + " | <a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>"
-			)
+			attachTweet(value)
 		})
 		}
 	};
@@ -61,7 +69,8 @@ $(document).ready(function(){
 			method: "POST",
 			success: function(data){
 				//console.log(data)
-				fetchTweets()
+				this_.find("input[type=text], textarea").val("")
+				attachTweet(data, true)
 			},
 			error: function(data){
 				console.log("error")
