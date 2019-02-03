@@ -18,7 +18,7 @@ $(document).ready(function(){
 		var dateDisplay = tweetValue.date_display;
 		var tweetContent = tweetValue.content;
 		var tweetUser = tweetValue.user;
-		var tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via " + tweetUser.username + " | " + dateDisplay + " | " + "<a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+		var tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9\"><p>" + tweetContent + "</p><p>via <a href=\"" + tweetUser.url + "\">" + tweetUser.username + "</a> | " + dateDisplay + " | " + "<a href='#'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
 		if (prepend==true){
 			$("#tweet-container").prepend(tweetFormattedHtml)
 		} else {
