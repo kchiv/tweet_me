@@ -1,6 +1,7 @@
 from django.conf import settings
 from django.urls import reverse
 from django.db import models
+from django.utils import timezone
 
 from .validators import validate_content
 
@@ -12,7 +13,13 @@ class TweetManager(models.Manager):
 			og_parent = parent_obj.parent
 		else:
 			og_parent = parent_obj
-		qs = self.get_queryset().filter(user=user, parent=parent_obj)
+		qs = self.get_queryset().filter(
+				user=user, parent=og_parent
+				).filter(
+					timestamp__year=timezone.now().year,
+					timestamp__month=timezone.now().month,
+					timestamp__day=timezone.now().day,
+				)
 		if qs.exists():
 			return None
 		obj = self.model(
