@@ -28,10 +28,12 @@ $(document).ready(function(){
 		var tweetUser = tweetValue.user;
 		var tweetFormattedHtml;
 		if (retweet && tweetValue.parent){
+			// retweet
 			var mainTweet = tweetValue.parent
-			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1><h4>Retweet</h4></div><div class=\"col-sm-9 media-b\"><p>" + mainTweet.content + "</p><p>via <a href=\"" + mainTweet.user.url + "\">" + mainTweet.user.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + mainTweet.id + "'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1><h4>Retweet</h4></div><div class=\"col-sm-9 media-b\"><p>" + mainTweet.content + "</p><p>via <a href=\"" + mainTweet.user.url + "\">" + mainTweet.user.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + mainTweet.id + "'>View</a> | <a href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
 		} else {
-			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9 media-b\"><p>" + tweetContent + "</p><p>via <a href=\"" + tweetUser.url + "\">" + tweetUser.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+			// fresh tweet
+			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9 media-b\"><p>" + tweetContent + "</p><p>via <a href=\"" + tweetUser.url + "\">" + tweetUser.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
 		}
 		if (prepend==true){
 			$("#tweet-container").prepend(tweetFormattedHtml)
