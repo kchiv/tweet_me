@@ -14,6 +14,25 @@ $(document).ready(function(){
 	var tweetList = [];
 	var nextTweetUrl;
 
+	$(document.body).on("click", ".retweetBtn", function(e){
+		e.preventDefault()
+		console.log("clicked")
+		var url = "/api" + $(this).attr("href")
+		$.ajax({
+			method: "GET",
+			url: url,
+			success: function (data) {
+				console.log(data)
+				attachTweet(data, true, true)
+				updateHashLinks()
+			},
+			error: function (data) {
+				console.log("error")
+				console.log(data)
+			}
+		})
+	})
+
 	function updateHashLinks(){
 		$(".media-b p").each(function(data){
 			var hashtagRegex = /(^|\s)#([\w\d-]+)/g
@@ -30,10 +49,10 @@ $(document).ready(function(){
 		if (retweet && tweetValue.parent){
 			// retweet
 			var mainTweet = tweetValue.parent
-			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1><h4>Retweet</h4></div><div class=\"col-sm-9 media-b\"><p>" + mainTweet.content + "</p><p>via <a href=\"" + mainTweet.user.url + "\">" + mainTweet.user.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + mainTweet.id + "'>View</a> | <a href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1><h4>Retweet</h4></div><div class=\"col-sm-9 media-b\"><p>" + mainTweet.content + "</p><p>via <a href=\"" + mainTweet.user.url + "\">" + mainTweet.user.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + mainTweet.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
 		} else {
 			// fresh tweet
-			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9 media-b\"><p>" + tweetContent + "</p><p>via <a href=\"" + tweetUser.url + "\">" + tweetUser.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+			tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9 media-b\"><p>" + tweetContent + "</p><p>via <a href=\"" + tweetUser.url + "\">" + tweetUser.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a></p>" + "</div><div class=\"col-sm-12\"><hr></div>";
 		}
 		if (prepend==true){
 			$("#tweet-container").prepend(tweetFormattedHtml)
