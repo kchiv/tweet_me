@@ -107,24 +107,32 @@
           })
         }
 
-        function attachTweet(tweetValue, prepend, retweet){
-          var dateDisplay = tweetValue.date_display;
-          var tweetContent = tweetValue.content;
-          var tweetUser = tweetValue.user;
-          var tweetFormattedHtml;
+        function formatTweet(tweetValue){
+
           var verb = "Like"
           if (tweetValue.did_like){
             verb = "Unlike"
           }
 
-          if (retweet && tweetValue.parent){
-            // retweet
-            var mainTweet = tweetValue.parent
-            tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1><h4>Retweet</h4></div><div class=\"col-sm-9 media-b\"><p>" + mainTweet.content + "</p><p>via <a href=\"" + mainTweet.user.url + "\">" + mainTweet.user.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + mainTweet.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a> | <a href='#' class='tweet-like' data-id='" + tweetValue.id + "'>" + verb + "</a> (" + tweetValue.likes + ")</p>" + "</div><div class=\"col-sm-12\"><hr></div>";
-          } else {
-            // fresh tweet
-            tweetFormattedHtml = "<div class=\"row\"><div class=\"col-sm-3 col-xs-12\"><h1>" + tweetUser.username + "</h1></div><div class=\"col-sm-9 media-b\"><p>" + tweetContent + "</p><p>via <a href=\"" + tweetUser.url + "\">" + tweetUser.username + "</a> | " + dateDisplay + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a> | <a href='#' class='tweet-like' data-id='" + tweetValue.id + "'>" + verb + "</a> (" + tweetValue.likes + ")</p>" + "</div><div class=\"col-sm-12\"><hr></div>";
+          var preContent = "";
+          var tweeter = tweetValue.user.username;
+          var tweeter_url = tweetValue.user.url;
+          var tweetContent;
+          if (tweetValue.parent){
+            tweetValue = tweetValue.parent
+            preContent = "<p>Retweet via <a href=\"" + tweetValue.user.url + "\">" + tweetValue.user.username + "</a></p>";
           }
+
+          tweetContent = "<div class=\"col-sm-3 col-xs-12\"><h1><a href=\"" + tweeter_url + "\">" + tweeter + "</a></h1>" + preContent + "</div><div class=\"col-sm-9 media-b\"><p>" + tweetValue.content + "</p><p>via <a href=\"" + tweetValue.user.url + "\">" + tweetValue.user.username + "</a> | " + tweetValue.date_display + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a> | <a href='#' class='tweet-like' data-id='" + tweetValue.id + "'>" + verb + "</a> (" + tweetValue.likes + ")</p></div>";
+
+          var container = "<div class=\"row\">" + tweetContent + "<div class=\"col-sm-12\"><hr></div></div>";
+          return container
+        }
+
+        function attachTweet(tweetValue, prepend, retweet){
+
+
+          var tweetFormattedHtml = formatTweet(tweetValue)
           if (prepend==true){
             tweetContainer.prepend(tweetFormattedHtml)
           } else {
