@@ -109,21 +109,24 @@
 
         function formatTweet(tweetValue){
 
+          var preContent = "";
+          var tweeter = tweetValue.user.username;
+          var tweeter_url = tweetValue.user.url;
+          var tweetContent;
+          var isReply = tweetValue.reply;
+          if (tweetValue.parent && !isReply){
+            tweetValue = tweetValue.parent
+            preContent = "<p>Retweet via <a href=\"" + tweetValue.user.url + "\">@" + tweetValue.user.username + "</a></p>";
+          } else if (tweetValue.parent && isReply) {
+            preContent = "<p>Reply to <a href=\"" + tweetValue.parent.user.url + "\">@" + tweetValue.parent.user.username + "</a></p>";
+          }
+
           var verb = "Like"
           if (tweetValue.did_like){
             verb = "Unlike"
           }
 
-          var preContent = "";
-          var tweeter = tweetValue.user.username;
-          var tweeter_url = tweetValue.user.url;
-          var tweetContent;
-          if (tweetValue.parent){
-            tweetValue = tweetValue.parent
-            preContent = "<p>Retweet via <a href=\"" + tweetValue.user.url + "\">" + tweetValue.user.username + "</a></p>";
-          }
-
-          tweetContent = "<div class=\"col-sm-3 col-xs-12\"><h1><a href=\"" + tweeter_url + "\">" + tweeter + "</a></h1>" + preContent + "</div><div class=\"col-sm-9 media-b\"><p>" + tweetValue.content + "</p><p>via <a href=\"" + tweetValue.user.url + "\">" + tweetValue.user.username + "</a> | " + tweetValue.date_display + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a> | <a href='#' class='tweet-like' data-id='" + tweetValue.id + "'>" + verb + "</a> (" + tweetValue.likes + ")</p></div>";
+          tweetContent = "<div class=\"col-sm-3 col-xs-12\"><h1><a href=\"" + tweeter_url + "\">" + tweeter + "</a></h1>" + preContent + "</div><div class=\"col-sm-9 media-b\"><p>" + tweetValue.content + "</p><p>via <a href=\"" + tweetValue.user.url + "\">@" + tweetValue.user.username + "</a> | " + tweetValue.date_display + " | " + "<a href='/tweet/" + tweetValue.id + "'>View</a> | <a class='retweetBtn' href='/tweet/" + tweetValue.id + "/retweet/'>Retweet</a> | <a href='#' class='tweet-like' data-id='" + tweetValue.id + "'>" + verb + "</a> (" + tweetValue.likes + ") | <a href='#' class='tweet-reply' data-id='" + tweetValue.id + "'>Reply</a></p></div>";
 
           var container = "<div class=\"row\">" + tweetContent + "<div class=\"col-sm-12\"><hr></div></div>";
           return container
