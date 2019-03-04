@@ -81,7 +81,8 @@
           var parentId = this_.attr("data-id")
           var username = this_.attr("data-user")
           $("#replyModal").modal({})
-
+          $("#replyModal textarea").after("<input type='hidden' value='" + parentId + "' name='parent_id'>")
+          $("#replyModal textarea").after("<input type='hidden' value='" + true + "' name='reply'>")
           $("#replyModal textarea").val("@" + username + " ")
 
           $("#replyModal").on("shown.bs.modal", function(){
@@ -235,7 +236,7 @@
         var charsStart = 140;
         var charsCurrent = 0;
 
-        $(".tweet-form").append("<span class='tweetCharsLeft'>" + charsStart + "</span>")
+        $(".tweet-form").append("<span class='tweetCharsLeft' style='margin-left: 20px'>" + charsStart + " left</span>")
 
         $(".tweet-form textarea").keyup(function(event){
           var tweetValue = $(this).val()
