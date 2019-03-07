@@ -2,6 +2,18 @@
 
 {% block title %}{{ object.content|truncatewords:8 }} {{ block.super }}{% endblock title %}
 
+{% block script %}
+
+<script>
+	
+$(document).ready(function(){
+	loadTweetContainer("tweet-container", {{ object.id }})
+});
+
+</script>
+
+{% endblock script %}
+
 {% block content %}
 <div class="row">
 
@@ -9,8 +21,7 @@
 		<h1>{{ object.user }}</h1>
 	</div>
 	<div class="col-sm-9 col-xs-12">
-		<p>{{ object.content }}</p>
-		<p>{{ object.timestamp|timesince }} ago</p>
+		<div id="tweet-container"></div>
 	</div>
 
 </div>
