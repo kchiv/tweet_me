@@ -39,7 +39,7 @@
     <script>
       const urlParams = new URLSearchParams(window.location.search);
 
-      function loadTweetContainer(tweetContainerID){
+      function loadTweetContainer(tweetContainerID, fetchOneId){
         const myParam = urlParams.get('q');
         var tweetList = [];
         var nextTweetUrl;
@@ -224,7 +224,33 @@
           })
         }
 
-        fetchTweets()
+
+
+        function fetchSingle(fetchOneId){
+          var fetchDetailUrl = "/api/tweet/" + fetchOneId + "/"
+          $.ajax({
+            url: fetchDetailUrl,
+            method: "GET",
+            success: function(data){
+              tweetList = data.results
+              parseTweets()
+              updateHashLinks()
+            },
+            error: function(data){
+              console.log("error")
+              console.log(data)
+            }
+          })
+        }
+
+
+
+        if (fetchOneId){
+          fetchSingle(fetchOneId)
+        } else {
+          fetchTweets()
+        }
+
 
         $("#loadmore").click(function(event){
           event.preventDefault()
